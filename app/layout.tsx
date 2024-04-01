@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./lib/ui/navbar";
 import Footer from "./lib/ui/footer";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="flex flex-col">
           <Navbar />
-          {children}
+          <Suspense>
+            {children}
+          </Suspense>
           <Footer />
         </div>
       </body>
