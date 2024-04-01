@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Hit, SearchParams } from "./lib/pixabay/types";
 import { search } from "./lib/pixabay/data";
+import { Suspense } from "react";
 
 export default async function Home({
   searchParams
@@ -11,12 +12,14 @@ export default async function Home({
 
   return (
     <div className="columns-md gap-8 space-y-8 w-full">
-      {data.hits.map((hit) => <Item hit={hit} key={hit.id} />)}
+      {/* <Suspense fallback={SkeletonItems()}> */}
+      {data.hits.map((hit) => <ListItem hit={hit} key={hit.id} />)}
+      {/* </Suspense> */}
     </div>
   )
 }
 
-function Item({ hit }: { hit: Hit }) {
+function ListItem({ hit }: { hit: Hit }) {
   const { id, webformatURL, webformatWidth, webformatHeight } = hit
   return (
     <div className='py-4'>
@@ -31,4 +34,16 @@ function Item({ hit }: { hit: Hit }) {
       </Link>
     </div>
   );
+}
+
+function SkeletonItems() {
+  const items = new Array(20).fill('')
+
+  return (
+    <>
+      {items.map((_value, index) => (
+        <div key={index} className="skeleton w-full max-w-md h-96"></div>
+      ))}
+    </>
+  )
 }
