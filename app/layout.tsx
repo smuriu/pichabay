@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: {
     template: '%s | pichabay',
-    default: 'pichabay'
+    default: 'pichabay',
   },
   description: 'Simple pixabay client app',
 }

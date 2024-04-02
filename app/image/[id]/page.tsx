@@ -77,7 +77,14 @@ export default async function Page({
                     <th>Link</th>
                     <td>
                       <Link className="btn btn-outline btn-block" href={data.pageURL} target="_blank">
-                        <Image src={'/pixabay.svg'} width={640} height={124} alt="pixabay" className="h-6" style={{ width: 'auto' }} />
+                        <Image
+                          src={'/pixabay.svg'}
+                          width={640}
+                          height={124}
+                          alt="pixabay"
+                          className="h-6"
+                          style={{ width: 'auto' }}
+                        />
                       </Link>
                     </td>
                   </tr>
