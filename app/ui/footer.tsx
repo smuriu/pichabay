@@ -18,7 +18,7 @@ export default function Footer() {
         <p>Copyright © 2024 - All right reserved</p>
       </aside>
       <nav className="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-        <Image src={'/pixabay.svg'} width={640} height={124} alt="pixabay" className="h-8" />
+        <Image src={'/pixabay.svg'} width={640} height={124} alt="pixabay" className="h-8" style={{ width: 'auto' }} />
       </nav>
     </footer>
   )

@@ -3,6 +3,7 @@
 import { FormEvent } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { ImageCategories, ImageTypes } from '../lib/pixabay/types'
+import { titleCase } from '../lib/utils'
 
 export default function SearchForm() {
   const searchParams = useSearchParams()
@@ -17,10 +18,8 @@ export default function SearchForm() {
       params.set('page', '1')
     }
     for (const [key, val] of data.entries()) {
-      console.log(key, val)
-      const valueString = val.toString()
-      if (valueString) {
-        params.set(key, valueString)
+      if (val) {
+        params.set(key, val.toString())
       } else {
         params.delete(key)
       }
@@ -39,12 +38,10 @@ export default function SearchForm() {
           defaultValue={searchParams.get('q')?.toString()}
         />
         <select className="select select-bordered join-item" name="image_type">
-          <option disabled value={''}>
-            Image Type
-          </option>
+          <option disabled>Image Type</option>
           {ImageTypes.map((val) => (
             <option key={val} value={val}>
-              {val}
+              {titleCase(val)}
             </option>
           ))}
         </select>
@@ -52,7 +49,7 @@ export default function SearchForm() {
           <option value={''}>All Categories</option>
           {ImageCategories.map((val) => (
             <option key={val} value={val}>
-              {val}
+              {titleCase(val)}
             </option>
           ))}
         </select>
