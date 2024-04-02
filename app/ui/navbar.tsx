@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import SearchForm from './search-form'
+import { Suspense } from 'react'
 
 export default function Navbar() {
   return (
@@ -10,7 +11,9 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex-none gap-2">
-        <SearchForm />
+        <Suspense>
+          <SearchForm />
+        </Suspense>
       </div>
     </div>
   )
