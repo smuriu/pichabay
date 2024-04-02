@@ -1,5 +1,5 @@
-import { type Hits, SearchSchema, SearchParams } from "./types"
-import "server-only";
+import { type Hits, SearchSchema, SearchParams } from './types'
+import 'server-only'
 
 // basic api client
 async function pixafetch(query: Record<string, string>) {
@@ -12,7 +12,7 @@ async function pixafetch(query: Record<string, string>) {
 
   const res = await fetch(`https://pixabay.com/api/?${params.toString()}`, {
     // cache result for at least 24hrs per pixabay constraints
-    next: { revalidate: 24 * 60 * 60 }
+    next: { revalidate: 24 * 60 * 60 },
   })
 
   const data = await res.json()
@@ -32,7 +32,7 @@ export async function search(query: SearchParams) {
 // retrieve a single item by id
 export async function get(id: number) {
   const query = {
-    id: id.toString()
+    id: id.toString(),
   }
 
   const data = await pixafetch(query)

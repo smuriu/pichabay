@@ -1,9 +1,9 @@
-import { get } from "@/app/lib/pixabay/data"
-import Image from "next/image"
-import Link from "next/link"
+import { get } from '@/app/lib/pixabay/data'
+import Image from 'next/image'
+import Link from 'next/link'
 
 export default async function Page({
-  params
+  params,
 }: {
   params: {
     id: number
@@ -15,7 +15,13 @@ export default async function Page({
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row justify-between">
-        <img src={data.largeImageURL} alt={`Image ${data.id}`} className="w-full max-w-3xl rounded-lg shadow-2xl" />
+        <img
+          src={data.webformatURL}
+          width={data.webformatWidth}
+          height={data.webformatHeight}
+          alt={`Image ${data.id}`}
+          className="w-full max-w-3xl rounded-lg shadow-2xl"
+        />
         <div className="card card-compact">
           <div className="card-body">
             <div className="overflow-x-auto">
@@ -26,7 +32,9 @@ export default async function Page({
                     <td>
                       <div className="flex gap-2">
                         {data.tags.split(', ').map((tag) => (
-                          <span key={tag} className="badge badge-lg badge-outline">{tag}</span>
+                          <span key={tag} className="badge badge-lg badge-outline">
+                            {tag}
+                          </span>
                         ))}
                       </div>
                     </td>
