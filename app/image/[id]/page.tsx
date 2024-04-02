@@ -15,11 +15,12 @@ export default async function Page({
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row justify-between">
-        <img
+        <Image
           src={data.webformatURL}
           width={data.webformatWidth}
           height={data.webformatHeight}
           alt={`Image ${data.id}`}
+          priority={true}
           className="w-full max-w-3xl rounded-lg shadow-2xl"
         />
         <div className="card card-compact">
@@ -65,7 +66,7 @@ export default async function Page({
                       <Link className="btn btn-outline btn-block" href={userLink} target="_blank">
                         <div className="avatar">
                           <div className="w-10 rounded-full">
-                            <img src={data.userImageURL} alt="" />
+                            <Image src={data.userImageURL} width="250" height="250" alt="" />
                           </div>
                         </div>
                         {data.user}
@@ -76,7 +77,7 @@ export default async function Page({
                     <th>Link</th>
                     <td>
                       <Link className="btn btn-outline btn-block" href={data.pageURL} target="_blank">
-                        <Image src={'/pixabay.svg'} width={640} height={124} alt="pixabay" className="h-6" />
+                        <Image src={'/pixabay.svg'} width={640} height={124} alt="pixabay" className="h-6" style={{ width: 'auto' }} />
                       </Link>
                     </td>
                   </tr>

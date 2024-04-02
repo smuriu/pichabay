@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Hit, SearchParams } from './lib/pixabay/types'
 import { search } from './lib/pixabay/data'
 import { Suspense } from 'react'
+import Image from 'next/image'
 
 export default async function Home({ searchParams }: { searchParams: SearchParams }) {
   const data = await search(searchParams)
@@ -22,7 +23,7 @@ function ListItem({ hit }: { hit: Hit }) {
   return (
     <div className="py-4">
       <Link href={`/image/${id}`}>
-        <img
+        <Image
           className="w-full max-w-md mx-auto rounded"
           src={webformatURL}
           width={webformatWidth}
