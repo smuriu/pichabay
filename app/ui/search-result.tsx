@@ -10,7 +10,7 @@ import { paginationPages } from '@/app/lib/utils'
 
 // todo: figure out how to use `swiper/element/bundle` instead with proper typing
 import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react'
-import { Navigation, Virtual } from 'swiper/modules'
+import { Navigation } from 'swiper/modules'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -47,14 +47,7 @@ export default function SearchResult({ result }: { result: Hits }) {
             </form>
           </div>
 
-          <Swiper
-            spaceBetween={10}
-            autoHeight={true}
-            cssMode={true}
-            navigation={true}
-            modules={[Navigation, Virtual]}
-            ref={mainSwiper}
-          >
+          <Swiper ref={mainSwiper} modules={[Navigation]} autoHeight={true} navigation={true}>
             {result.hits.map((hit) => (
               <SwiperSlide key={hit.id} className="max-w-full">
                 <div className="flex flex-col lg:flex-row items-center justify-center">
