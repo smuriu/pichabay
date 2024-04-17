@@ -29,30 +29,29 @@ export const StringBool = ['true', 'false'] as const
 
 export const SortOrder = ['popular', 'latest'] as const
 
-export const SearchSchema = z
-  .object({
-    q: z.optional(z.string()),
-    image_type: z.optional(z.enum(ImageTypes)),
-    category: z.optional(z.enum(ImageCategories)),
-    editors_choice: z.optional(z.enum(StringBool)),
-    order: z.optional(z.enum(SortOrder)),
-    page: z.optional(
-      z.coerce
-        .number()
-        .min(1)
-        .transform((num) => num.toString()),
-    ),
-    per_page: z.optional(
-      z.coerce
-        .number()
-        .min(3)
-        .max(200)
-        .transform((num) => num.toString()),
-    ),
-    // todo: add support for below keys
-    // lang, orientation, min_width, min_height, colors, safesearch
-  })
-  .strict()
+export const SearchSchema = z.object({
+  q: z.optional(z.string()),
+  image_type: z.optional(z.enum(ImageTypes)),
+  category: z.optional(z.enum(ImageCategories)),
+  editors_choice: z.optional(z.enum(StringBool)),
+  order: z.optional(z.enum(SortOrder)),
+  page: z.optional(
+    z.coerce
+      .number()
+      .min(1)
+      .transform((num) => num.toString()),
+  ),
+  per_page: z.optional(
+    z.coerce
+      .number()
+      .min(3)
+      .max(200)
+      .transform((num) => num.toString()),
+  ),
+  // todo: add support for below keys
+  // lang, orientation, min_width, min_height, colors, safesearch
+})
+// .strict()
 
 export type SearchParams = z.infer<typeof SearchSchema>
 
