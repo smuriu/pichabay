@@ -7,8 +7,10 @@ export default async function Home({ searchParams }: { searchParams: SearchParam
   const data = await search(searchParams)
 
   return (
-    <Suspense>
-      <SearchResult result={data} />
-    </Suspense>
+    <div className="flex flex-col gap-4 p-4">
+      <Suspense>
+        <SearchResult result={data} />
+      </Suspense>
+    </div>
   )
 }

@@ -21,7 +21,7 @@ export default function SearchResult({ result }: { result: Hits }) {
   const [currentHitId, setCurrentHitId] = useState<Number>()
 
   return (
-    <div className="flex flex-col gap-4 p-4">
+    <>
       <h1 className="text-5xl">{result.total} images</h1>
       <div className="columns-md gap-8 space-y-8 w-full">
         {result.hits.map((hit, index) => (
@@ -60,7 +60,7 @@ export default function SearchResult({ result }: { result: Hits }) {
         </div>
       </dialog>
       <Pagination totalHits={result.totalHits} />
-    </div>
+    </>
   )
 }
 
