@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { HitDetail } from './hits'
 import { Hits, SearchSchema, SearchParams, Hit } from '@/app/lib/pixabay/types'
 import { paginationPages } from '@/app/lib/utils'
@@ -15,52 +15,58 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 
-export default function SearchResult({ result }: { result: Hits }) {
-  const resultDialog = useRef<HTMLDialogElement>(null)
-  const mainSwiper = useRef<SwiperRef>(null)
-  const [currentHitId, setCurrentHitId] = useState<Number>()
+function useParsedSearchParams(): SearchParams {
+  const rawSearchParams = useSearchParams()
+  const parsed = SearchSchema.safeParse(rawSearchParams)
+  return parsed.success ? parsed.data : {}
+}
+
+function ResultDialog({
+  hits,
+  currentHitId,
+  onDialogClose,
+}: {
+  hits: Hit[]
+  currentHitId: number | null
+  onDialogClose: () => void
+}) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const swiperRef = useRef<SwiperRef>(null)
+
+  useEffect(() => {
+    if (currentHitId !== null) {
+      const index = hits.findIndex(({ id }) => currentHitId === id)
+      swiperRef.current?.swiper.slideTo(index, 500)
+      if (dialogRef.current && !dialogRef.current.open) {
+        dialogRef.current.showModal()
+      }
+    }
+  }, [hits, currentHitId])
 
   return (
-    <>
-      <h1 className="text-5xl">{result.total} images</h1>
-      <div className="columns-md gap-8 space-y-8 w-full">
-        {result.hits.map((hit, index) => (
-          <SearchHit
-            hit={hit}
-            key={hit.id}
-            onHitClicked={() => {
-              setCurrentHitId(hit.id)
-              mainSwiper.current?.swiper.slideTo(index)
-              resultDialog.current?.showModal()
-            }}
-          />
-        ))}
-      </div>
-      <dialog ref={resultDialog} className="modal">
-        <div className="modal-box w-full max-w-screen-2xl">
-          <div className="modal-action">
-            <Link href={`/image/${currentHitId}`} className="btn">
-              Permalink
-            </Link>
-            <form method="dialog">
-              <button className="btn">Close</button>
-            </form>
-          </div>
-
-          <Swiper ref={mainSwiper} modules={[Navigation]} autoHeight={true} navigation={true}>
-            {result.hits.map((hit) => (
-              <SwiperSlide key={hit.id} className="max-w-full">
-                <div className="flex flex-col lg:flex-row items-center justify-center">
-                  <HitDetail hit={hit} />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-          {/* todo: add thumbnails for nav */}
+    <dialog ref={dialogRef} onClose={onDialogClose} className="modal">
+      <div className="modal-box w-full max-w-screen-2xl">
+        <div className="modal-action">
+          <Link href={`/image/${currentHitId}`} className="btn">
+            Permalink
+          </Link>
+          <form method="dialog">
+            <button className="btn">Close</button>
+          </form>
         </div>
-      </dialog>
-      <Pagination totalHits={result.totalHits} />
-    </>
+
+        <Swiper ref={swiperRef} modules={[Navigation]} autoHeight={true} navigation={true}>
+          {hits.map((hit) => (
+            <SwiperSlide key={hit.id} className="max-w-full">
+              <div className="flex flex-col lg:flex-row items-center justify-center">
+                <HitDetail hit={hit} />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        {/* todo: add thumbnails for nav */}
+      </div>
+    </dialog>
   )
 }
 
@@ -78,12 +84,6 @@ function SearchHit({ hit, onHitClicked }: { hit: Hit; onHitClicked: () => void }
       />
     </div>
   )
-}
-
-function useParsedSearchParams(): SearchParams {
-  const rawSearchParams = useSearchParams()
-  const parsed = SearchSchema.safeParse(rawSearchParams)
-  return parsed.success ? parsed.data : {}
 }
 
 function Pagination({ totalHits }: { totalHits: number }) {
@@ -139,5 +139,22 @@ function Pagination({ totalHits }: { totalHits: number }) {
         </Link>
       )}
     </div>
+  )
+}
+
+export default function SearchResult({ result }: { result: Hits }) {
+  const [currentHitId, setCurrentHitId] = useState<number | null>(null)
+
+  return (
+    <>
+      <h1 className="text-5xl">{result.total} images</h1>
+      <div className="columns-md gap-8 space-y-8 w-full">
+        {result.hits.map((hit) => (
+          <SearchHit hit={hit} key={hit.id} onHitClicked={() => setCurrentHitId(hit.id)} />
+        ))}
+      </div>
+      <ResultDialog hits={result.hits} currentHitId={currentHitId} onDialogClose={() => setCurrentHitId(null)} />
+      <Pagination totalHits={result.totalHits} />
+    </>
   )
 }
